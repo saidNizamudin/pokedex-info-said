@@ -1,0 +1,81 @@
+.pokemonText {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 100%;
+	border-top: 2px solid #00000020;
+	padding-bottom: 4em;
+}
+
+.pokemonId {
+	font-size: 14px;
+	font-weight: 600;
+	color: #000000;
+	opacity: 0.5;
+}
+
+.pokemonName {
+	font-size: 24px;
+	font-weight: 700;
+	color: #000000;
+	text-transform: capitalize;
+}
+
+.pokemonTypes {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	margin-top: 0.5em;
+	gap: 0.5em;
+}
+
+.pokemonType {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 13px;
+	font-weight: 500;
+	border-radius: 20px;
+	padding: 0.3em 1em;
+	color: #ffffff;
+}
+
+.pokemonButtonContainer {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	width: -webkit-fill-available;
+	background-color: #ffffff;
+	border-radius: 0 0 10px 10px;
+	padding: 1em;
+	font-size: 16px;
+	font-weight: 500;
+	gap: 0.5em;
+}
+
+.pokemonButtonContainer span:first-child {
+	font-size: 20px;
+}
+
+.pokemonButtonContainer span {
+	transition: all 0.3s ease-in-out;
+}
+
+.pokemonButtonContainer:hover span {
+	color: rgb(122, 104, 0);
+}
+
+.starIcon {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	color: rgb(186, 158, 0);
+	font-size: 30px;
+}

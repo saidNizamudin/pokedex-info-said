@@ -7,7 +7,12 @@ import { TYPES_BACKGROUND } from '../constants';
 import { PokemonListItemType, PokemonType } from '../types';
 import styles from './PokemonCard.module.css';
 
-export default function PokemonCard({ pokemon }: { pokemon: PokemonListItemType }) {
+type PokemonCardProps = {
+	pokemon: PokemonListItemType;
+	key: string;
+};
+
+export default function PokemonCard({ pokemon, key }: PokemonCardProps) {
 	const [data, setData] = useState<PokemonType>({} as PokemonType);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [isInCollection, setIsInCollection] = useState<boolean>(false);
@@ -30,7 +35,7 @@ export default function PokemonCard({ pokemon }: { pokemon: PokemonListItemType 
 		const parsedCollection = JSON.parse(collection);
 		const isInCollection = parsedCollection[data?.id];
 		setIsInCollection(!!isInCollection);
-	}, [data?.id]);
+	}, [data]);
 
 	const handleAddToCollection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.stopPropagation();
@@ -72,7 +77,8 @@ export default function PokemonCard({ pokemon }: { pokemon: PokemonListItemType 
 			}
 			onClick={() => {
 				navigate(`/pokemon/${data?.id}`);
-			}}>
+			}}
+			key={key}>
 			{isInCollection && <StarFilled className={styles.starIcon} />}
 			<div className={styles.pokemonText}>
 				<span className={styles.pokemonId}>{`#${data?.id}`}</span>

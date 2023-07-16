@@ -1,3 +1,7 @@
+.hide {
+	display: none;
+}
+
 .pokemonText {
 	display: flex;
 	flex-direction: column;

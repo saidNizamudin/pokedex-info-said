@@ -17,5 +17,25 @@ export const TYPES_BACKGROUND: any = {
 	ghost: '#735797',
 	dark: '#705746',
 	steel: '#B7B7CE',
-	unknown: '#68A090',
 };
+
+export const TYPES: any = [
+	'fire',
+	'grass',
+	'electric',
+	'water',
+	'ground',
+	'rock',
+	'fairy',
+	'poison',
+	'bug',
+	'dragon',
+	'psychic',
+	'flying',
+	'fighting',
+	'normal',
+	'ice',
+	'ghost',
+	'dark',
+	'steel',
+];

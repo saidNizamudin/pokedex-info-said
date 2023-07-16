@@ -1,9 +1,11 @@
 import { FilterFilled, FolderFilled, LoadingOutlined } from '@ant-design/icons';
+import { Button, Modal } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { getPokemonList } from '../api'; // Replace 'Pokemon' with the actual type for your 'getPokemonList' response.
+import { getPokemonByType, getPokemonList } from '../api';
 import PokemonCard from '../components/PokemonCard';
+import { TYPES } from '../constants';
 import { PokemonListItemType } from '../types';
 import styles from './Home.module.css';
 
@@ -12,28 +14,37 @@ export default function Home() {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
 	const [isEndOfData, setIsEndOfData] = useState<boolean>(false);
+	const [type, setType] = useState<string>('');
+	const [typeSelected, setTypeSelected] = useState<string>('');
+	const [showFilter, setShowFilter] = useState(false);
 	const observerRef = useRef<HTMLDivElement | null>(null);
 
 	const navigate = useNavigate();
 
+	const loadPokemonList = useCallback(
+		(offset: number = 0) => {
+			console.log('loadPokemonList', offset);
+			fetch(getPokemonList(30, offset))
+				.then((res) => res.json())
+				.then((data) => {
+					setTimeout(() => {
+						setIsLoading(false);
+						setIsLoadMore(false);
+						setPokemonList([...pokemonList, ...data.results]);
+						if (data.next === null) {
+							setIsEndOfData(true);
+						}
+					}, 500);
+				});
+		},
+		[pokemonList]
+	);
+
 	const loadMoreData = useCallback(() => {
 		if (isEndOfData) return;
-		if (!isLoading) {
-			setIsLoadMore(true);
-		}
-		fetch(getPokemonList(30, pokemonList.length)).then((res) => {
-			res.json().then((data) => {
-				setTimeout(() => {
-					setIsLoading(false);
-					setIsLoadMore(false);
-					setPokemonList([...pokemonList, ...data.results]);
-					if (data.next === null) {
-						setIsEndOfData(true);
-					}
-				}, 500);
-			});
-		});
-	}, [isLoading, isEndOfData, pokemonList.length]);
+		loadPokemonList(pokemonList.length);
+		if (!isLoading) setIsLoadMore(true);
+	}, [isLoading, isEndOfData, loadPokemonList, pokemonList.length]);
 
 	useQuery('home', loadMoreData);
 
@@ -58,22 +69,39 @@ export default function Home() {
 		};
 	}, [loadMoreData]);
 
+	const handleFilterChange = (selectedType: string) => {
+		setTypeSelected(selectedType);
+		setPokemonList([]);
+		setShowFilter(false);
+
+		if (selectedType) {
+			setIsEndOfData(false);
+			setIsLoading(true);
+			fetch(getPokemonByType(selectedType))
+				.then((res) => res.json())
+				.then((data) => {
+					setTimeout(() => {
+						setIsLoading(false);
+						setPokemonList(data.pokemon.map((entry: any) => entry.pokemon));
+						if (data.pokemon.length === 0) {
+							setIsEndOfData(true);
+						}
+					}, 500);
+				});
+		} else {
+			setIsLoading(true);
+			loadPokemonList();
+		}
+	};
+
 	return (
 		<>
 			<div className={styles.menuContainer}>
-				<span
-					className={styles.menuItem}
-					onClick={() => {
-						navigate('/collection');
-					}}>
+				<span className={styles.menuItem} onClick={() => setShowFilter(true)}>
 					<FilterFilled />
 					Filter
 				</span>
-				<span
-					className={styles.menuItem}
-					onClick={() => {
-						navigate('/collection');
-					}}>
+				<span className={styles.menuItem} onClick={() => navigate('/collection')}>
 					<FolderFilled />
 					My Collection
 				</span>
@@ -114,6 +142,31 @@ export default function Home() {
 					</button>
 				</div>
 			)}
+			<Modal
+				title="Filter by Type"
+				open={showFilter}
+				onOk={() => handleFilterChange(type)}
+				onCancel={() => setShowFilter(false)}
+				className={styles.modal}>
+				<div className={styles.filterContainer}>
+					{TYPES.map((item: string) => (
+						<Button
+							key={item}
+							className={type === item ? styles.filterButtonActive : styles.filterButton}
+							onClick={() => setType(item)}
+							type="primary">
+							{item}
+						</Button>
+					))}
+					<Button
+						key={'reset'}
+						className={type === '' ? styles.filterButtonResetActive : styles.filterButtonReset}
+						onClick={() => setType('')}
+						type="ghost">
+						reset
+					</Button>
+				</div>
+			</Modal>
 		</>
 	);
 }

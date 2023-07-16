@@ -111,3 +111,50 @@
 	background-color: #13acd7;
 	color: white;
 }
+
+.filterContainer {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+	gap: 1em;
+	padding: 1em 0;
+}
+
+.filterButtonActive {
+	border: 1px solid #1677ff;
+	color: white;
+	background-color: #1677ff;
+	cursor: pointer;
+}
+
+.filterButton {
+	border: 1px solid #1677ff;
+	color: #1677ff;
+	background-color: white;
+	cursor: pointer;
+	transition: 0.3s all ease-in-out;
+}
+
+.filterButton:hover {
+	background-color: #1677ff;
+	color: white;
+}
+
+.filterButtonReset {
+	border: 1px solid #ff1639;
+	color: #ff1639;
+	background-color: white;
+	cursor: pointer;
+	transition: 0.3s all ease-in-out;
+}
+
+.filterButtonReset:hover {
+	background-color: #ff1639;
+	color: white;
+}
+
+.filterButtonResetActive {
+	border: 1px solid #ff1639;
+	color: white;
+	background-color: #ff1639;
+	cursor: pointer;
+}

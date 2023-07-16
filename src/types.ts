@@ -19,6 +19,20 @@ export type PokemonSpritesType = {
 	};
 };
 
+export type PokemonAbilityType = {
+	ability: {
+		name: string;
+	};
+};
+
+export type PokemonStatType = {
+	base_stat: number;
+	effort: number;
+	stat: {
+		name: string;
+	};
+};
+
 export type PokemonType = {
 	id: number;
 	name: string;
@@ -26,4 +40,15 @@ export type PokemonType = {
 	height: number;
 	types: PokemonTypesType[];
 	sprites: PokemonSpritesType;
+	abilities: PokemonAbilityType[];
+	stats: PokemonStatType[];
+};
+
+export type SpeciesType = {
+	flavor_text_entries: {
+		flavor_text: string;
+		language: {
+			name: string;
+		};
+	}[];
 };

@@ -1,7 +1,13 @@
-import { HomeFilled, LoadingOutlined, PlusCircleFilled } from '@ant-design/icons';
+import {
+	FolderFilled,
+	HomeFilled,
+	LoadingOutlined,
+	MinusCircleFilled,
+	PlusCircleFilled,
+} from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getFlavorTextById, getPokemonById } from '../api';
@@ -13,6 +19,7 @@ export default function Pokemon() {
 	const { id } = useParams();
 	const [data, setData] = useState<PokemonType>({} as PokemonType);
 	const [species, setSpecies] = useState<SpeciesType>({} as SpeciesType);
+	const [isInCollection, setIsInCollection] = useState<boolean>(false);
 	const [current, setCurrent] = useState('about');
 	const [isLoadingData, setIsLoadingData] = useState(true);
 	const [isLoadingAbout, setIsLoadingAbout] = useState(true);
@@ -48,8 +55,34 @@ export default function Pokemon() {
 		})
 	);
 
+	useEffect(() => {
+		const collection = localStorage.getItem('collection') || '{}';
+		const parsedCollection = JSON.parse(collection);
+		const isInCollection = parsedCollection[data?.id];
+		setIsInCollection(!!isInCollection);
+	}, [data]);
+
 	const onClick: MenuProps['onClick'] = (e) => {
 		setCurrent(e.key);
+	};
+
+	const handleAddToCollection = () => {
+		const collection = localStorage.getItem('collection') || '{}';
+		const parsedCollection = JSON.parse(collection);
+		parsedCollection[data?.id] = {
+			name: data?.name,
+			url: `https://pokeapi.co/api/v2/pokemon/${data?.id}/`,
+		};
+		localStorage.setItem('collection', JSON.stringify(parsedCollection));
+		setIsInCollection(true);
+	};
+
+	const handleRemoveFromCollection = () => {
+		const collection = localStorage.getItem('collection') || '{}';
+		const parsedCollection = JSON.parse(collection);
+		delete parsedCollection[data?.id];
+		localStorage.setItem('collection', JSON.stringify(parsedCollection));
+		setIsInCollection(false);
 	};
 
 	return (
@@ -62,6 +95,14 @@ export default function Pokemon() {
 					}}>
 					<HomeFilled />
 					Back to Home
+				</span>
+				<span
+					className={styles.menuItem}
+					onClick={() => {
+						navigate('/collection');
+					}}>
+					<FolderFilled />
+					My Collection
 				</span>
 			</div>
 			{isLoadingData || isLoadingAbout ? (
@@ -99,10 +140,17 @@ export default function Pokemon() {
 							}
 						)}
 					</div>
-					<div className={styles.pokemonButtonContainer}>
-						<PlusCircleFilled />
-						<span>Add to Collection</span>
-					</div>
+					{isInCollection ? (
+						<div className={styles.pokemonButtonContainer} onClick={handleRemoveFromCollection}>
+							<MinusCircleFilled />
+							<span>Remove from Collection</span>
+						</div>
+					) : (
+						<div className={styles.pokemonButtonContainer} onClick={handleAddToCollection}>
+							<PlusCircleFilled />
+							<span>Add to Collection</span>
+						</div>
+					)}
 					<div className={styles.pokemonContent}>
 						<Menu
 							mode="horizontal"

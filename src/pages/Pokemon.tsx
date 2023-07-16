@@ -1,9 +1,9 @@
-import { LoadingOutlined, PlusCircleFilled } from '@ant-design/icons';
+import { HomeFilled, LoadingOutlined, PlusCircleFilled } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getFlavorTextById, getPokemonById } from '../api';
 import { TYPES_BACKGROUND } from '../constants';
 import { PokemonType, SpeciesType } from '../types';
@@ -16,6 +16,8 @@ export default function Pokemon() {
 	const [current, setCurrent] = useState('about');
 	const [isLoadingData, setIsLoadingData] = useState(true);
 	const [isLoadingAbout, setIsLoadingAbout] = useState(true);
+
+	const navigate = useNavigate();
 
 	const items: MenuProps['items'] = [
 		{
@@ -52,6 +54,16 @@ export default function Pokemon() {
 
 	return (
 		<div className={styles.contentContainer}>
+			<div className={styles.menuContainer}>
+				<span
+					className={styles.menuItem}
+					onClick={() => {
+						navigate('/');
+					}}>
+					<HomeFilled />
+					Back to Home
+				</span>
+			</div>
 			{isLoadingData || isLoadingAbout ? (
 				<div className={styles.loaderContainer}>
 					<LoadingOutlined className={styles.loader} />

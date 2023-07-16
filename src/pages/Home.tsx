@@ -1,6 +1,7 @@
-import { LoadingOutlined } from '@ant-design/icons';
+import { FilterFilled, FolderFilled, LoadingOutlined } from '@ant-design/icons';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { getPokemonList } from '../api'; // Replace 'Pokemon' with the actual type for your 'getPokemonList' response.
 import PokemonCard from '../components/PokemonCard';
 import { PokemonListItemType } from '../types';
@@ -12,6 +13,8 @@ export default function Home() {
 	const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
 	const [isEndOfData, setIsEndOfData] = useState<boolean>(false);
 	const observerRef = useRef<HTMLDivElement | null>(null);
+
+	const navigate = useNavigate();
 
 	const loadMoreData = useCallback(() => {
 		if (isEndOfData) return;
@@ -57,6 +60,24 @@ export default function Home() {
 
 	return (
 		<>
+			<div className={styles.menuContainer}>
+				<span
+					className={styles.menuItem}
+					onClick={() => {
+						navigate('/collection');
+					}}>
+					<FilterFilled />
+					Filter
+				</span>
+				<span
+					className={styles.menuItem}
+					onClick={() => {
+						navigate('/collection');
+					}}>
+					<FolderFilled />
+					My Collection
+				</span>
+			</div>
 			<div className={styles.contentContainer}>
 				{isLoading ? (
 					<div className={styles.loaderContainer}>

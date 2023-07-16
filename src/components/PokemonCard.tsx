@@ -26,14 +26,32 @@ export default function PokemonCard({ pokemon }: { pokemon: PokemonListItemType 
 	);
 
 	useEffect(() => {
-		const collection = localStorage.getItem('collection');
-		if (collection) {
-			const parsedCollection = JSON.parse(collection);
-			if (parsedCollection?.[data?.id]) {
-				setIsInCollection(true);
-			}
-		}
+		const collection = localStorage.getItem('collection') || '{}';
+		const parsedCollection = JSON.parse(collection);
+		const isInCollection = parsedCollection[data?.id];
+		setIsInCollection(!!isInCollection);
 	}, [data?.id]);
+
+	const handleAddToCollection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		e.stopPropagation();
+		const collection = localStorage.getItem('collection') || '{}';
+		const parsedCollection = JSON.parse(collection);
+		parsedCollection[data?.id] = {
+			name: data?.name,
+			url: pokemon.url,
+		};
+		localStorage.setItem('collection', JSON.stringify(parsedCollection));
+		setIsInCollection(true);
+	};
+
+	const handleRemoveFromCollection = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		e.stopPropagation();
+		const collection = localStorage.getItem('collection') || '{}';
+		const parsedCollection = JSON.parse(collection);
+		delete parsedCollection[data?.id];
+		localStorage.setItem('collection', JSON.stringify(parsedCollection));
+		setIsInCollection(false);
+	};
 
 	return (
 		<Card
@@ -73,19 +91,17 @@ export default function PokemonCard({ pokemon }: { pokemon: PokemonListItemType 
 					})}
 				</div>
 			</div>
-			<div className={styles.pokemonButtonContainer}>
-				{isInCollection ? (
-					<>
-						<MinusCircleFilled />
-						<span>Remove from Collection</span>
-					</>
-				) : (
-					<>
-						<PlusCircleFilled />
-						<span>Add to Collection</span>
-					</>
-				)}
-			</div>
+			{isInCollection ? (
+				<div className={styles.pokemonButtonContainer} onClick={handleRemoveFromCollection}>
+					<MinusCircleFilled />
+					<span>Remove from Collection</span>
+				</div>
+			) : (
+				<div className={styles.pokemonButtonContainer} onClick={handleAddToCollection}>
+					<PlusCircleFilled />
+					<span>Add to Collection</span>
+				</div>
+			)}
 		</Card>
 	);
 }

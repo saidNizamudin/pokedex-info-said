@@ -212,3 +212,33 @@
 .pokemonButtonContainer:hover span {
 	color: #13acd7;
 }
+
+.menuContainer {
+	position: fixed;
+	top: calc(74px + 1em);
+	right: 1em;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: center;
+	gap: 1em;
+}
+
+.menuItem {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5em 1em;
+	border-radius: 8px;
+	border: 2px solid #13acd7;
+	color: #13acd7;
+	cursor: pointer;
+	gap: 0.5em;
+	transition: 0.3s all ease-in-out;
+}
+
+.menuItem:hover {
+	background-color: #13acd7;
+	color: white;
+}

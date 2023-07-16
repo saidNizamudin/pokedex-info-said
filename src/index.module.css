@@ -1,0 +1,24 @@
+.navContainer {
+	width: -webkit-fill-available;
+	height: 40px;
+	padding: 1em;
+	background-color: #ffffff60;
+	border-bottom: 2px solid #cccccc55;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	backdrop-filter: blur(10px);
+}
+
+.navLogo {
+	height: 40px;
+}
+
+.contentContainer {
+	width: 100%;
+	min-height: calc(100% - 74px);
+	height: auto;
+}

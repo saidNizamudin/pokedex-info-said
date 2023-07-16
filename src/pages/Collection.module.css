@@ -32,56 +32,6 @@
 	opacity: 0.5;
 }
 
-.loaderMoreContainer {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 1em;
-	padding: 1em;
-	width: -webkit-fill-available;
-	background-color: #13acd7;
-	color: white;
-	font-size: 16px;
-}
-
-.endOfDataContainer {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 1em;
-	padding: 1em;
-	width: -webkit-fill-available;
-	background-color: #fff;
-	color: white;
-	font-size: 16px;
-}
-
-.endOfDataText {
-	font-size: 16px;
-	font-weight: 600;
-	opacity: 0.5;
-	color: #000;
-}
-
-.endOfDataButton {
-	background-color: #13acd7;
-	color: white;
-	font-size: 16px;
-	font-weight: 600;
-	padding: 0.5em 1em;
-	border-radius: 10px;
-	border: none;
-	outline: none;
-	cursor: pointer;
-	transition: 0.3s all ease-in-out;
-}
-
-.endOfDataButton:hover {
-	background-color: #0e8fb1;
-}
-
 .menuContainer {
 	position: fixed;
 	top: calc(74px + 1em);
